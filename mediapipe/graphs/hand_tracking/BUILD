@@ -85,6 +85,7 @@ cc_library(
         "//mediapipe/calculators/core:flow_limiter_calculator",
         "//mediapipe/calculators/core:gate_calculator",
         "//mediapipe/calculators/core:merge_calculator",
+	"//mediapipe/calculators/util:predict_calculator",
         "//mediapipe/calculators/core:previous_loopback_calculator",
     ],
 )

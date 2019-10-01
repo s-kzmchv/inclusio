@@ -17,18 +17,25 @@ package com.google.mediapipe.apps.handtrackinggpu;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.google.mediapipe.components.CameraHelper;
 import com.google.mediapipe.components.CameraXPreviewHelper;
 import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.components.PermissionHelper;
 import com.google.mediapipe.framework.AndroidAssetUtil;
+import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /** Main activity of MediaPipe example apps. */
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
   private static final String BINARY_GRAPH_NAME = "handtrackinggpu.binarypb";
   private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
   private static final String OUTPUT_VIDEO_STREAM_NAME = "output_video";
+  private static final String OUTPUT_TEXT_STREAM_NAME = "output_text";
   private static final CameraHelper.CameraFacing CAMERA_FACING = CameraHelper.CameraFacing.FRONT;
 
   // Flips the camera-preview frames vertically before sending them into FrameProcessor to be
@@ -68,10 +76,26 @@ public class MainActivity extends AppCompatActivity {
   // Handles camera access via the {@link CameraX} Jetpack support library.
   private CameraXPreviewHelper cameraHelper;
 
+
+  private void updateTextView(final String s) {
+    MainActivity.this.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        TextView tv= (TextView) findViewById(R.id.text_box);
+        tv.setText(s);
+      }
+    });
+
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+//    TextView textView = (TextView) findViewById(R.id.text_box);
+//    textView.setText("awd");
+//    textView.setText("awd");
+
 
     previewDisplayView = new SurfaceView(this);
     setupPreviewDisplayView();
@@ -90,8 +114,20 @@ public class MainActivity extends AppCompatActivity {
             OUTPUT_VIDEO_STREAM_NAME);
     processor.getVideoSurfaceOutput().setFlipY(FLIP_FRAMES_VERTICALLY);
 
+    processor.getGraph().addPacketCallback(OUTPUT_TEXT_STREAM_NAME, packet -> {
+      String str = PacketGetter.getString(packet);
+      if (!str.equals(" "))
+        updateTextView(str);
+      Log.i("LOL", str);
+
+    });
+
+
     PermissionHelper.checkAndRequestCameraPermissions(this);
   }
+
+
+
 
   @Override
   protected void onResume() {
@@ -120,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
   private void setupPreviewDisplayView() {
     previewDisplayView.setVisibility(View.GONE);
     ViewGroup viewGroup = findViewById(R.id.preview_display_layout);
+
     viewGroup.addView(previewDisplayView);
 
     previewDisplayView
@@ -138,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 // based on the size of the SurfaceView that contains the display.
                 Size viewSize = new Size(width, height);
                 Size displaySize = cameraHelper.computeDisplaySizeFromViewSize(viewSize);
+
 
                 // Connect the converter to the camera-preview frames as its input (via
                 // previewFrameTexture), and configure the output width and height as the computed

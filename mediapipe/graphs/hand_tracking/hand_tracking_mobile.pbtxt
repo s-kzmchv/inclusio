@@ -6,6 +6,7 @@
 # Images coming into and out of the graph.
 input_stream: "input_video"
 output_stream: "output_video"
+output_stream: "output_text"
 
 # Throttles the images flowing downstream for flow control. It passes through
 # the very first incoming image unaltered, and waits for downstream nodes
@@ -109,6 +110,13 @@ node {
   input_stream: "hand_rect_from_palm_detections"
   input_stream: "prev_hand_rect_from_landmarks"
   output_stream: "hand_rect"
+}
+
+# predicts symbol
+node {
+  calculator: "PredictSymbolCalculator"
+  input_stream: "NORM_LANDMARKS:hand_landmarks"
+  output_stream: "TEXT:output_text"
 }
 
 # Subgraph that renders annotations and overlays them on top of the input

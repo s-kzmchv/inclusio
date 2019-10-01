@@ -284,7 +284,7 @@ REGISTER_CALCULATOR(AnnotationOverlayCalculator);
       continue;
     }
     const RenderData& render_data = cc->Inputs().Index(i).Get<RenderData>();
-    renderer_->RenderDataOnImage(render_data);
+//    renderer_->RenderDataOnImage(render_data);
   }
 
   if (use_gpu_) {

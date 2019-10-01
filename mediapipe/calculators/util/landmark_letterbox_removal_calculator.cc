@@ -74,7 +74,7 @@ class LandmarkLetterboxRemovalCalculator : public CalculatorBase {
               cc->Inputs().HasTag(kLetterboxPaddingTag))
         << "Missing one or more input streams.";
 
-    cc->Inputs().Tag(kLandmarksTag).Set<std::vector<NormalizedLandmark>>();
+    cc->Inputs().Tag(kLandmarksTag).Set<std::vector<Landmark>>();
     cc->Inputs().Tag(kLetterboxPaddingTag).Set<std::array<float, 4>>();
 
     cc->Outputs().Tag(kLandmarksTag).Set<std::vector<NormalizedLandmark>>();
@@ -95,7 +95,7 @@ class LandmarkLetterboxRemovalCalculator : public CalculatorBase {
     }
 
     const auto& input_landmarks =
-        cc->Inputs().Tag(kLandmarksTag).Get<std::vector<NormalizedLandmark>>();
+        cc->Inputs().Tag(kLandmarksTag).Get<std::vector<Landmark>>();
     const auto& letterbox_padding =
         cc->Inputs().Tag(kLetterboxPaddingTag).Get<std::array<float, 4>>();
 
@@ -110,6 +110,9 @@ class LandmarkLetterboxRemovalCalculator : public CalculatorBase {
       NormalizedLandmark new_landmark;
       const float new_x = (landmark.x() - left) / (1.0f - left_and_right);
       const float new_y = (landmark.y() - top) / (1.0f - top_and_bottom);
+//      const float new_x = landmark.x() ;
+//      const float new_y = landmark.y();
+
 
       new_landmark.set_x(new_x);
       new_landmark.set_y(new_y);

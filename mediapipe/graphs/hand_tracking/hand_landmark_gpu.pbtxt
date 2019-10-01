@@ -96,7 +96,7 @@ node {
 node {
   calculator: "TfLiteTensorsToLandmarksCalculator"
   input_stream: "TENSORS:landmark_tensors"
-  output_stream: "NORM_LANDMARKS:landmarks"
+  output_stream: "LANDMARKS:landmarks"
   node_options: {
     [type.googleapis.com/mediapipe.TfLiteTensorsToLandmarksCalculatorOptions] {
       num_landmarks: 21

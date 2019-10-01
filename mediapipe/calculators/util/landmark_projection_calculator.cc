@@ -110,6 +110,12 @@ class LandmarkProjectionCalculator : public CalculatorBase {
       new_x = new_x * input_rect.width() + input_rect.x_center();
       new_y = new_y * input_rect.height() + input_rect.y_center();
 
+//      float new_x = new_x * input_rect.width() + input_rect.x_center();
+//      float new_y = new_y * input_rect.height() + input_rect.y_center();
+
+//      new_x = landmark.x();
+//      new_y = landmark.y();
+
       new_landmark.set_x(new_x);
       new_landmark.set_y(new_y);
       // Keep z-coord as is.

@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Hand Tracking GPU</string>
+    <string name="app_name" translatable="false">Inclusio</string>
     <string name="no_camera_access" translatable="false">Please grant camera permissions.</string>
+    <string name="test" translatable="true" formatted="true">TEST</string>
 </resources>
